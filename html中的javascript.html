@@ -1,0 +1,62 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="preload" href="./script/01-动态添加脚本.js" />
+
+    <!-- 
+        script元素有一下八个属性
+        *async:表示应该立即开始下载脚本,但不能阻止其他页面的动作,如下载资源或者等待其他脚本资源的加载,只对外部脚本文件有效
+        charset:使用src属性指定的代码字符集
+        crossorigin:配置相关请求的cors(跨域资源共享)设置.默认不使用cros,crossorigin="anonymous",配置文件请求不必设置凭据标志
+        crossorigin="use-credentials"设置凭据标志,意味着出站请求会包含凭据
+        *defer:表示脚本可以延迟到文档完全被解析和显示之后在执行.对外部脚本文件有效,在ie7以前堆行内脚本也可以指定这个属性.
+        integrity:对接收到的资源和指定的加密签名已验证子资源的完整性,如果接受到的资源签名和这个属性指定的签名不匹配,则页面会报错脚本不会执行.这个属性可以用于确保内容分发网络.
+        *src:表示包含要执行的代码的外部文件
+        type:代理language,表示代码块中脚本语言的内容类型.这个值始终是text/javascript;(如果这个值时module,则代码会被当成es6的模块,而且只有这时候代码中才能出现import和export)
+
+     -->
+    <!-- 立即下载但是延迟执行 最好只包含一个这样的脚本:概念中:第一个延迟的脚本会在第二个延迟的脚本之前执行,并在DOMContentLoaded事件之前执行,但是:(实际当中)顺序不定 -->
+    <script
+      defer
+      src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"
+    ></script>
+  </head>
+  <body>
+    <p>sayHi</p>
+  </body>
+  <!-- 标签位置 -->
+  <script src="./script/01-html中的javascript.js"></script>
+
+  <script>
+    function sayHi() {
+      console.log("<\/script>");
+    }
+    sayHi();
+  </script>
+  <!-- 推迟执行 defer-->
+  <!-- 异步执行脚本 async -->
+  <!-- defer和async的共同点:都只能适用于外部脚本,都会告诉浏览器立即开始下载 -->
+  <!-- 不同点:async并不能保证按照他们的出现顺序执行,告诉浏览器不必等脚本加载完在加载页面或者其他脚本资源.defer延迟执行. 不推荐-->
+
+  <!-- 动态加载脚本 -->
+  <script>
+    let script = document.createElement("script");
+    script.src = "./script/01-动态添加脚本.js";
+    script.async = false;
+    debugger;
+    document.head.appendChild(script);
+  </script>
+  <noscript>
+      <p>this page requeires a js-enabled browser</p>
+  </noscript>
+
+  <!-- 行内代码和外部文件
+    1.可维护性:代码散落到多个html中难于维护,而且不能通用.外部文件可以将相同功能代码进行多次复用
+    2.缓存:会格局特定的设置缓存所有外部链接的js文件,如果两个页面都用到同一个js文件那这个js文件只会被下载一次.
+    3.适应未来
+
+
+  -->
+</html>
